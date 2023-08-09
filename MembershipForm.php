@@ -7,7 +7,7 @@ Author: Adam Smalley
 */
 
 // Function to generate the form
-function myform_plugin_form()
+function membership_form_plugin_form()
 {
     global $wpdb;
 
@@ -18,11 +18,11 @@ function myform_plugin_form()
     $fields = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}membership_form_fields", ARRAY_A);
 
     ?>
-    <form id="myform" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post">
-        <input type="hidden" name="action" value="myform_plugin">
-        <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce('myform_plugin')); ?>">
+    <form id="membership_form" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post">
+        <input type="hidden" name="action" value="membership_form_plugin">
+        <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce('membership_form_plugin')); ?>">
         <?php foreach ($fields as $field): ?>
-            <div class="myform-field">
+            <div class="membership_form-field">
                 <label for="<?php echo $field['name']; ?>"><?php echo $field['label']; ?></label>
                 <?php if ($field['type'] === 'select'): ?>
                     <select id="<?php echo $field['name']; ?>" name="<?php echo $field['name']; ?>"
@@ -36,7 +36,7 @@ function myform_plugin_form()
                         name="<?php echo $field['name']; ?>" data-validate="<?php echo $field['validate']; ?>"
                         data-label="<?php echo $field['label']; ?>">
                 <?php endif; ?>
-                <div class="myform-error"></div>
+                <div class="membership_form-error"></div>
             </div>
         <?php endforeach; ?>
         <button type="submit">Submit</button>
@@ -44,7 +44,7 @@ function myform_plugin_form()
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Get form elements
-            var form = document.getElementById('myform');
+            var form = document.getElementById('membership_form');
             var inputs = form.querySelectorAll('input:not([type="hidden"]), select');
 
             // Add blur event listeners to validate input fields
@@ -60,7 +60,7 @@ function myform_plugin_form()
                     }
 
                     // Display error message
-                    var correspondingErrorDiv = this.parentNode.querySelector('.myform-error');
+                    var correspondingErrorDiv = this.parentNode.querySelector('.membership_form-error');
                     correspondingErrorDiv.innerText = error;
 
                     // Change field and label color based on validation
@@ -84,7 +84,7 @@ function myform_plugin_form()
                 });
 
                 // Check if there are any validation errors
-                var errorDivs = form.querySelectorAll('.myform-error');
+                var errorDivs = form.querySelectorAll('.membership_form-error');
                 console.log(JSON.stringify(errorDivs));
                 if (Array.from(errorDivs).some(function (div) { return div.innerText; })) {
                     return;
@@ -116,8 +116,9 @@ function myform_plugin_form()
     $output = ob_get_clean();
     return $output;
 }
-add_shortcode('myform_plugin', 'myform_plugin_form'); // This allows you to place the form anywhere using the [myform_plugin] shortcode
+add_shortcode('membership_form_plugin', 'membership_form_plugin_form'); // This allows you to place the form anywhere using the [membership_form_plugin] shortcode
 
-// Include the form handler
+// Include the form handler and user page modifications
 include_once plugin_dir_path(__FILE__) . 'form-handler.php';
+include_once plugin_dir_path(__FILE__) . 'user-profile-fields.php';
 ?>

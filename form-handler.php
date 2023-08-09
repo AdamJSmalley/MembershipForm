@@ -1,9 +1,9 @@
 <?php
 // Handle the form submission
-add_action('wp_ajax_myform_plugin', 'myform_plugin_handler');
-add_action('wp_ajax_nopriv_myform_plugin', 'myform_plugin_handler');
+add_action('wp_ajax_membership_form_plugin', 'membership_form_plugin_handler');
+add_action('wp_ajax_nopriv_membership_form_plugin', 'membership_form_plugin_handler');
 
-function myform_plugin_handler()
+function membership_form_plugin_handler()
 {
 
     global $wpdb;
@@ -12,7 +12,7 @@ function myform_plugin_handler()
     $fields = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}membership_form_fields", ARRAY_A);
 
     // Check nonce for security
-    check_ajax_referer('myform_plugin', 'nonce');
+    check_ajax_referer('membership_form_plugin', 'nonce');
 
     // Prepare user data, validate and sanitize form data
     $userdata = array();
