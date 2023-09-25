@@ -118,7 +118,8 @@ function membership_form_plugin_form()
 }
 add_shortcode('membership_form_plugin', 'membership_form_plugin_form'); // This allows you to place the form anywhere using the [membership_form_plugin] shortcode
 
-// Include the form handler and user page modifications
+// Include other files
 include_once plugin_dir_path(__FILE__) . 'form-handler.php';
 include_once plugin_dir_path(__FILE__) . 'user-profile-fields.php';
+include_once plugin_dir_path(__FILE__) . 'add-staff-role.php';
 ?>
